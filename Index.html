@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get My Weather</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link rel="icon" type="image/png" href="kweather.png">
+  </head>
+
+  <body>
+    <main>
+      <!--- <p id="data"></p> -->
+      <!---<p>Country: <span id="country"></span></p> -->
+      <p><span id="town"></span></p>
+      <p id="icon"></p>
+      <p>Current Weather: <span id="weather"></span> <br>Temperature: <span id="temperature"></span></p>
+      <div class="button-container">
+        <div id="C-button">&deg;C</div>
+        <div id="F-button">&deg;F</div>
+      </div>
+    </main>
+    <script>
+    let flag = 1;
+    
+    function updateWeather(units) {
+      let latitude;
+      let longitude;
+            
+      if (navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(function(position) {
+            latitude = position.coords.latitude;          
+            longitude = position.coords.longitude;
+            /*document.getElementById('data').innerHTML="latitude: "+ 
+            position.coords.latitude +  "<br>longitude: " +  position.coords.longitude;*/
+            let url = "http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&units="+units+"&APPID=1437175ecaacbe1bb362ecce440f98f8"
+            req = new XMLHttpRequest();
+            req.open("GET", url, true);
+            req.send();
+            req.onload = function(){        
+              let json=JSON.parse(req.responseText);
+              console.log(json);
+              /*document.getElementById('country').innerHTML = json["sys"]["country"];*/
+              document.getElementById('town').innerHTML = json["name"] + ",  " + json["sys"]["country"];
+              document.getElementById('weather').innerHTML = json["weather"][0]["description"];
+              let temperature = (parseFloat(json["main"]["temp"])).toFixed(1);
+              let symbol;
+              if (flag) {
+                symbol = "C";
+              } else {
+                symbol = "F";
+              };
+              document.getElementById('temperature').innerHTML = temperature + "&deg;" + symbol;
+              let iconURL;
+              let icon = json["weather"][0]["icon"];
+              iconURL = "http://openweathermap.org/img/w/" + icon + ".png"
+              console.log(iconURL);
+              document.getElementById('icon').innerHTML = "<img src='" + iconURL + "'>"
+            };
+          });
+      };
+    };
+    
+    updateWeather("metric");
+        
+    let cButton = document.querySelector("#C-button");
+    let fButton = document.querySelector("#F-button");
+        
+    cButton.addEventListener('click', function(e) {
+      if (!flag) {
+        updateWeather("metric");
+        flag = 1;
+        cButton.style.backgroundColor = "lightblue";
+        fButton.style.backgroundColor = "#eee";
+      } 
+    })
+    
+    fButton.addEventListener('click', function(e) {
+      if (flag) {
+        updateWeather("imperial");
+        flag = 0;
+        fButton.style.backgroundColor = "lightblue";
+        cButton.style.backgroundColor = "#eee";
+      } 
+    })
+
+    
+    /*req = new XMLHttpRequest();
+      req.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&APPID=1437175ecaacbe1bb362ecce440f98f8",true);
+      req.send();
+      req.onload = function(){        
+        json=JSON.parse(req.responseText);
+        document.getElementById('current_weather').innerHTML = JSON.stringify(json);
+        };*/
+    </script>
+  </body>
+</html>

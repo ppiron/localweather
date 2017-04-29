@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #555;
+}
+
+main {
+  width: 400px;
+  margin: 100px auto;
+  text-align: center;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+main p {
+  margin: 20px 0;
+}
+
+.button-container {
+  margin: 0 auto;
+  display: flex;
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  
+}
+
+#town {
+  font-size: 20px;
+}
+
+#C-button {
+  width: 50%;
+  height: 30px;
+  cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  background-color: lightblue;
+  margin-right: 5px;
+}
+
+#F-button {
+  width: 50%;
+  height: 30px;
+  cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  background-color: #eee;
+}

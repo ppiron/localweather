@@ -10,6 +10,7 @@ main {
   margin: 100px auto;
   text-align: center;
   font-family: 'Josefin Sans', sans-serif;
+  border: 1px solid blue;
 }
 
 main p {
@@ -48,4 +49,10 @@ main p {
   padding-bottom: 5px;
   border-radius: 5px;
   background-color: #eee;
+}
+
+@media only screen and (max-width: 400px) {
+  main {
+    width: 100%;
+  }
 }

@@ -34,7 +34,7 @@
             longitude = position.coords.longitude;
             /*document.getElementById('data').innerHTML="latitude: "+ 
             position.coords.latitude +  "<br>longitude: " +  position.coords.longitude;*/
-            let url = "https://api.apixu.com/v1/current.json?key=68b82974fbfa4eb5856155811173004&q="+latitude+","+longitude
+            let url = "http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&units="+units+"&APPID=1437175ecaacbe1bb362ecce440f98f8"
             req = new XMLHttpRequest();
             req.open("GET", url, true);
             req.send();
@@ -42,14 +42,9 @@
               let json=JSON.parse(req.responseText);
               console.log(json);
               /*document.getElementById('country').innerHTML = json["sys"]["country"];*/
-              document.getElementById('town').innerHTML = json["location"]["name"] + ",  " + json["location"]["country"];
-              document.getElementById('weather').innerHTML = json["current"]["condition"]["text"];
-              let temperature;
-              if (units === "metric") {
-                temperature = (parseFloat(json["current"]["temp_c"])).toFixed(1);
-              } else {
-                temperature = (parseFloat(json["current"]["temp_f"])).toFixed(1);
-              }              
+              document.getElementById('town').innerHTML = json["name"] + ",  " + json["sys"]["country"];
+              document.getElementById('weather').innerHTML = json["weather"][0]["description"];
+              let temperature = (parseFloat(json["main"]["temp"])).toFixed(1);
               let symbol;
               if (flag) {
                 symbol = "C";
@@ -58,8 +53,8 @@
               };
               document.getElementById('temperature').innerHTML = temperature + "&deg;" + symbol;
               let iconURL;
-              let icon = json["current"]["condition"]["icon"];
-              iconURL = "https:"+icon;
+              let icon = json["weather"][0]["icon"];
+              iconURL = "http://openweathermap.org/img/w/" + icon + ".png"
               console.log(iconURL);
               document.getElementById('icon').innerHTML = "<img src='" + iconURL + "'>"
             };
